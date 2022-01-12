@@ -9,8 +9,12 @@
 
       <div v-if="stateListNameInput">
         <hr />
-        <input v-model="title" placeholder="text me" />
-        <button @click="createNewList">Добавить</button>
+        <input
+          v-model="title"
+          placeholder="text me"
+          @keydown.enter="addItemToList"
+        />
+        <button @click="addItemToList">Добавить</button>
         <button @click="showListNameInput">Отмена</button>
         <div>
           <h2>Имя списка:</h2>
@@ -21,8 +25,14 @@
     <div v-if="list.length">
       <ul>
         <hr />
-        <li v-for="(item, index) in list" :key="item">
+        <li
+          v-for="(item, index) in list"
+          :key="item"
+          :class="{ complete: item.complete }"
+        >
           {{ index + 1 }} {{ item.title }}
+          <button @click.stop="deleteItemFromList(item)">X</button>
+          <button @click="completeTask(item)">V</button>
         </li>
       </ul>
     </div>
@@ -37,30 +47,22 @@ export default {
     return {
       stateListNameInput: false,
       title: "",
-      list: [
-        {
-          title: "some title",
-          complete: false,
-        },
-
-        {
-          title: "quis ut nam facilis et officia qui",
-          completed: false,
-        },
-      ],
+      list: [],
+      isComplete: true,
     };
   },
+  created() {
+    const listData = localStorage.getItem("item-list");
+    if (listData) {
+      this.list = JSON.parse(listData);
+    }
+  },
 
-  // mounted() {
-  //   const placeholderJson = fetch(
-  //     "https://jsonplaceholder.typicode.com/todos/1"
-  //   ).then((r) => r.json());
-  // },
   methods: {
     showListNameInput() {
       this.stateListNameInput = !this.stateListNameInput;
     },
-    createNewList() {
+    addItemToList() {
       const currentItem = {
         title: this.title,
         complete: false,
@@ -68,8 +70,28 @@ export default {
       this.list = [...this.list, currentItem];
       this.title = "";
     },
+    deleteItemFromList(itemToRemove) {
+      this.list = this.list.filter((i) => i !== itemToRemove);
+    },
+    completeTask(item) {
+      if (item.complete == true) {
+        item.complete = false;
+
+        return;
+      }
+      item.complete = true;
+    },
+  },
+  watch: {
+    list() {
+      localStorage.setItem("item-list", JSON.stringify(this.list));
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.complete {
+  text-decoration: line-through;
+}
+</style>
