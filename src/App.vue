@@ -32,7 +32,7 @@
         >
           {{ index + 1 }} {{ item.title }}
           <button @click.stop="deleteItemFromList(item)">X</button>
-          <button @click="completeTask(item)">V</button>
+          <!-- <button @click="completeTask(item)">V</button> -->
         </li>
       </ul>
     </div>
@@ -73,14 +73,14 @@ export default {
     deleteItemFromList(itemToRemove) {
       this.list = this.list.filter((i) => i !== itemToRemove);
     },
-    completeTask(item) {
-      if (item.complete == true) {
-        item.complete = false;
+    // completeTask(item) {
+    //   if (item.complete == true) {
+    //     item.complete = false;
 
-        return;
-      }
-      item.complete = true;
-    },
+    //     return;
+    //   }
+    //   item.complete = true;
+    // },
   },
   watch: {
     list() {
