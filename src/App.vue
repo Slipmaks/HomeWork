@@ -17,7 +17,7 @@
         <button @click="addItemToList">Добавить</button>
         <button @click="showListNameInput">Отмена</button>
         <div>
-          <h2>Имя списка:</h2>
+          <h2>Имя cписка:</h2>
           <h3>{{ title }}</h3>
         </div>
       </div>
@@ -27,12 +27,12 @@
         <hr />
         <li
           v-for="(item, index) in list"
-          :key="item"
+          :key="item.id"
           :class="{ complete: item.complete }"
         >
           {{ index + 1 }} {{ item.title }}
           <button @click.stop="deleteItemFromList(item)">X</button>
-          <!-- <button @click="completeTask(item)">V</button> -->
+          <button @click="completeTask(index, item)">V</button>
         </li>
       </ul>
     </div>
@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       stateListNameInput: false,
+      id: "",
       title: "",
       list: [],
       isComplete: true,
@@ -73,14 +74,17 @@ export default {
     deleteItemFromList(itemToRemove) {
       this.list = this.list.filter((i) => i !== itemToRemove);
     },
-    // completeTask(item) {
-    //   if (item.complete == true) {
-    //     item.complete = false;
+    completeTask(index, item) {
+      if (item.complete == true) {
+        this.list[index].complete = false;
+        console.log(this.list[index].complete);
+        return;
+      }
 
-    //     return;
-    //   }
-    //   item.complete = true;
-    // },
+      this.list[index].complete = true;
+      console.log(this.list[index].complete);
+      return;
+    },
   },
   watch: {
     list() {
