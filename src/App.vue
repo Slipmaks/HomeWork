@@ -77,13 +77,10 @@ export default {
     completeTask(index, item) {
       if (item.complete == true) {
         this.list[index].complete = false;
-        console.log(this.list[index].complete);
         return;
       }
 
       this.list[index].complete = true;
-      console.log(this.list[index].complete);
-      return;
     },
   },
   watch: {
