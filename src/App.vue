@@ -35,6 +35,7 @@
           <button @click="completeTask(index, item)">V</button>
         </li>
       </ul>
+      <button @click="clearList">Clear list</button>
     </div>
   </div>
 </template>
@@ -77,15 +78,22 @@ export default {
     completeTask(index, item) {
       if (item.complete == true) {
         this.list[index].complete = false;
+        this.updateListData();
         return;
       }
-
       this.list[index].complete = true;
+      this.updateListData();
+    },
+    updateListData() {
+      localStorage.setItem("item-list", JSON.stringify(this.list));
+    },
+    clearList() {
+      this.list = [];
     },
   },
   watch: {
     list() {
-      localStorage.setItem("item-list", JSON.stringify(this.list));
+      this.updateListData();
     },
   },
 };
