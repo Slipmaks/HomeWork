@@ -7,7 +7,7 @@
         <button @click="showListNameInput">Добавить</button>
       </div>
 
-      <div v-if="stateListNameInput">
+      <template v-if="stateListNameInput">
         <hr />
         <input
           v-model="title"
@@ -20,9 +20,9 @@
           <h2>Имя cписка:</h2>
           <h3>{{ title }}</h3>
         </div>
-      </div>
+      </template>
     </div>
-    <div v-if="list.length">
+    <template v-if="list.length">
       <ul>
         <hr />
         <li
@@ -36,7 +36,7 @@
         </li>
       </ul>
       <button @click="clearList">Clear list</button>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -50,7 +50,6 @@ export default {
       id: "",
       title: "",
       list: [],
-      isComplete: true,
     };
   },
   created() {
@@ -65,7 +64,9 @@ export default {
       this.stateListNameInput = !this.stateListNameInput;
     },
     addItemToList() {
+      this.id = this.list.length + 1;
       const currentItem = {
+        id: this.id,
         title: this.title,
         complete: false,
       };
@@ -74,6 +75,7 @@ export default {
     },
     deleteItemFromList(itemToRemove) {
       this.list = this.list.filter((i) => i !== itemToRemove);
+      this.list.forEach((item, idx) => (item.id = idx + 1));
     },
     completeTask(index, item) {
       if (item.complete == true) {
