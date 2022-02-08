@@ -23,8 +23,8 @@
       </template>
     </div>
     <template v-if="list.length">
+      <hr />
       <ul>
-        <hr />
         <li
           v-for="(item, index) in list"
           :key="item.id"
@@ -80,13 +80,13 @@ export default {
     completeTask(index, item) {
       if (item.complete == true) {
         this.list[index].complete = false;
-        this.updateListData();
+        this.updateLocalStorageData();
         return;
       }
       this.list[index].complete = true;
-      this.updateListData();
+      this.updateLocalStorageData();
     },
-    updateListData() {
+    updateLocalStorageData() {
       localStorage.setItem("item-list", JSON.stringify(this.list));
     },
     clearList() {
@@ -95,7 +95,7 @@ export default {
   },
   watch: {
     list() {
-      this.updateListData();
+      this.updateLocalStorageData();
     },
   },
 };
@@ -104,5 +104,8 @@ export default {
 <style>
 .complete {
   text-decoration: line-through;
+}
+li {
+  list-style: none;
 }
 </style>
